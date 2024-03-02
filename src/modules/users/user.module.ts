@@ -7,10 +7,12 @@ import { DeleteUserService } from './services/delete-user.service';
 import { ShowUserService } from './services/show-user.service';
 import { UserRepository } from './repositories/user.repository';
 import { UserPrismaRepository } from './repositories/prisma/user.prisma.repository';
+import { PrismaService } from 'src/infra/database/prisma.service';
 
 @Module({
     controllers: [UserController],
     providers: [
+        PrismaService,
         CreateUserService,
         UpdateUserService,
         ReplaceUserService,
