@@ -1,21 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { IUpdateUserDTO } from '../dto/update-user.dto';
-import { PrismaService } from 'src/providers/database/PrismaService';
 import { hash } from 'bcrypt';
+import { UserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class UpdateUserService {
-    constructor(private prismaService: PrismaService) {}
+    constructor(private userRepository: UserRepository) {}
 
     async execute(id: string, { name, email, password }: IUpdateUserDTO) {
-        const user = await this.prismaService.user.findUnique({
-            where: { id },
-        });
+        const user = await this.userRepository.findById(id);
 
         if (email && email !== user.email) {
-            const emailExist = await this.prismaService.user.findUnique({
-                where: { email },
-            });
+            const emailExist = await this.userRepository.findByEmail(email);
             if (emailExist) {
                 throw new HttpException(
                     'email already used.',
@@ -24,17 +20,14 @@ export class UpdateUserService {
             }
         }
 
-        const PasswordHashed = password
+        const passwordHashed = password
             ? await hash(password, 8)
             : user.password;
 
-        await this.prismaService.user.update({
-            data: {
-                name,
-                email,
-                password: PasswordHashed,
-            },
-            where: { id },
+        await this.userRepository.update(id, {
+            name,
+            email,
+            password: passwordHashed,
         });
     }
 }

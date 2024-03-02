@@ -1,17 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/providers/database/PrismaService';
+import { UserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class DeleteUserService {
-    constructor(private prismaSevice: PrismaService) {}
+    constructor(private userRepository: UserRepository) {}
 
     async execute(id: string) {
-        const user = await this.prismaSevice.user.findUnique({ where: { id } });
+        const user = await this.userRepository.findById(id);
 
         if (!user) {
             throw new HttpException('user not found.', HttpStatus.NOT_FOUND);
         }
 
-        await this.prismaSevice.user.delete({ where: { id } });
+        await this.userRepository.delete(id);
     }
 }

@@ -5,6 +5,8 @@ import { UpdateUserService } from './services/update-user.service';
 import { ReplaceUserService } from './services/replace-user.service';
 import { DeleteUserService } from './services/delete-user.service';
 import { ShowUserService } from './services/show-user.service';
+import { UserRepository } from './repositories/user.repository';
+import { UserPrismaRepository } from './repositories/prisma/user.prisma.repository';
 
 @Module({
     controllers: [UserController],
@@ -14,6 +16,7 @@ import { ShowUserService } from './services/show-user.service';
         ReplaceUserService,
         DeleteUserService,
         ShowUserService,
+        { provide: UserRepository, useClass: UserPrismaRepository },
     ],
     imports: [],
 })

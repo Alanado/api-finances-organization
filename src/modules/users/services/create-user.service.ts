@@ -1,16 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/providers/database/PrismaService';
 import { ICreateUSerDTO } from '../dto/create-user.dto';
 import { hash } from 'bcrypt';
+import { UserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class CreateUserService {
-    constructor(private prismaService: PrismaService) {}
+    constructor(private userRepository: UserRepository) {}
 
     async execute({ name, email, password }: ICreateUSerDTO) {
-        const userExist = await this.prismaService.user.findUnique({
-            where: { email },
-        });
+        const userExist = await this.userRepository.findByEmail(email);
 
         if (userExist) {
             throw new HttpException(
@@ -20,12 +18,10 @@ export class CreateUserService {
         }
         const passwordHashed = await hash(password, 8);
 
-        return this.prismaService.user.create({
-            data: {
-                name,
-                email,
-                password: passwordHashed,
-            },
+        return this.userRepository.create({
+            name,
+            email,
+            password: passwordHashed,
         });
     }
 }
