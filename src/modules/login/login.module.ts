@@ -4,6 +4,7 @@ import { LoginService } from './services/login.service';
 import { UserRepository } from '../users/repositories/user.repository';
 import { UserPrismaRepository } from '../users/repositories/prisma/user.prisma.repository';
 import { LoginController } from './login.controller';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
     controllers: [LoginController],
@@ -12,6 +13,12 @@ import { LoginController } from './login.controller';
         LoginService,
         { provide: UserRepository, useClass: UserPrismaRepository },
     ],
-    imports: [],
+    imports: [
+        JwtModule.register({
+            global: true,
+            privateKey: process.env.SECRET,
+            signOptions: { expiresIn: '8h' },
+        }),
+    ],
 })
 export class LoginModule {}

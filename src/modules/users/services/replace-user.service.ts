@@ -11,9 +11,11 @@ export class ReplaceUserService {
         const user = await this.userRepository.findById(id);
 
         if (email !== user.email) {
-            const emailExist = this.userRepository.findByEmail(email);
+            const emailExist = await this.userRepository.findByEmail(email);
 
             if (emailExist) {
+                console.log(emailExist);
+
                 throw new HttpException(
                     'email already used.',
                     HttpStatus.BAD_REQUEST,

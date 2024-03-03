@@ -27,6 +27,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "^5.10.2",
     "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",
     "mapped-types": "^0.0.1",
     "prisma": "^5.10.2",
