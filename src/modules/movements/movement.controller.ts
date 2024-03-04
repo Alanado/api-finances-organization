@@ -1,6 +1,7 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     Param,
     Patch,
@@ -16,6 +17,7 @@ import { IUpdateMovementDTO } from './dto/update-movement.dto';
 import { UpdateMovementService } from './services/update-movement.service';
 import { ShowMovementsService } from './services/show-movements.service';
 import { IQueryParamsDTO } from './dto/query-params.dto';
+import { DeleteMovementService } from './services/delete-movement.service';
 
 @Controller('/movement')
 export class MovementController {
@@ -23,6 +25,7 @@ export class MovementController {
         private readonly createMovement: CreateMovementService,
         private readonly updateMovement: UpdateMovementService,
         private readonly showmMovement: ShowMovementsService,
+        private readonly deleteMovement: DeleteMovementService,
     ) {}
 
     @UseGuards(AuthGuard)
@@ -46,5 +49,12 @@ export class MovementController {
     @Get()
     async show(@Request() req, @Query() query: IQueryParamsDTO) {
         return this.showmMovement.execute(req.user.sub, { ...query });
+    }
+
+    @UseGuards(AuthGuard)
+    @Delete('/:id')
+    async delete(@Request() req, @Param('id') id: string) {
+        await this.deleteMovement.execute(id, req.user.sub);
+        return;
     }
 }
