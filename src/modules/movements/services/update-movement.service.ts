@@ -37,7 +37,6 @@ export class UpdateMovementService {
 
         if (type && value) {
             if (type !== movement.type && type === 'EXPENSE') {
-                console.log('aqui oc 1');
                 const balance = user.balance - movement.value;
                 const newBalance = balance - value;
                 await this.prismaService.user.update({
@@ -57,8 +56,6 @@ export class UpdateMovementService {
             }
 
             if (type !== movement.type && type === 'REVENUE') {
-                console.log('aqui oc 2');
-
                 const balance = user.balance + movement.value;
                 const newBalance = balance + value;
                 await this.prismaService.user.update({
@@ -79,8 +76,6 @@ export class UpdateMovementService {
         }
 
         if (value) {
-            console.log('aqui oc 5');
-
             if (movement.type === 'EXPENSE') {
                 const balance = user.balance + movement.value;
                 const newBalance = balance - value;
@@ -120,8 +115,6 @@ export class UpdateMovementService {
         }
 
         if (type && type !== movement.type) {
-            console.log('aqui oc 6');
-
             if (type === 'EXPENSE') {
                 const balance = user.balance - movement.value;
                 const newBalance = balance - movement.value;
@@ -159,7 +152,6 @@ export class UpdateMovementService {
             return;
         }
 
-        console.log('aqui oc 7');
         return this.prismaService.movement.update({
             data: {
                 category,
