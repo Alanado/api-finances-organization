@@ -18,6 +18,7 @@ import { IReplaceUserDTO } from './dto/replace-user.dto';
 import { DeleteUserService } from './services/delete-user.service';
 import { ShowUserService } from './services/show-user.service';
 import { AuthGuard } from 'src/infra/providers/auth.guard';
+import { ShowBalanceService } from './services/show-balance.service';
 
 @Controller('/user')
 export class UserController {
@@ -27,6 +28,7 @@ export class UserController {
         private readonly replaceUser: ReplaceUserService,
         private readonly deleteUser: DeleteUserService,
         private readonly showUser: ShowUserService,
+        private readonly showBalance: ShowBalanceService,
     ) {}
 
     @Post()
@@ -38,6 +40,12 @@ export class UserController {
     @Get()
     async show(@Request() req) {
         return await this.showUser.execute(req.user.sub);
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('/balance')
+    async getBalance(@Request() req) {
+        return this.showBalance.execute(req.user.sub);
     }
 
     @UseGuards(AuthGuard)

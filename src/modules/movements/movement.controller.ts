@@ -24,7 +24,7 @@ export class MovementController {
     constructor(
         private readonly createMovement: CreateMovementService,
         private readonly updateMovement: UpdateMovementService,
-        private readonly showmMovement: ShowMovementsService,
+        private readonly showMovement: ShowMovementsService,
         private readonly deleteMovement: DeleteMovementService,
     ) {}
 
@@ -48,13 +48,12 @@ export class MovementController {
     @UseGuards(AuthGuard)
     @Get()
     async show(@Request() req, @Query() query: IQueryParamsDTO) {
-        return this.showmMovement.execute(req.user.sub, { ...query });
+        return this.showMovement.execute(req.user.sub, { ...query });
     }
 
     @UseGuards(AuthGuard)
     @Delete('/:id')
     async delete(@Request() req, @Param('id') id: string) {
-        await this.deleteMovement.execute(id, req.user.sub);
-        return;
+        return await this.deleteMovement.execute(id, req.user.sub);
     }
 }

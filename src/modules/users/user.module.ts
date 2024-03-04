@@ -8,6 +8,7 @@ import { ShowUserService } from './services/show-user.service';
 import { UserRepository } from './repositories/user.repository';
 import { UserPrismaRepository } from './repositories/prisma/user.prisma.repository';
 import { PrismaService } from 'src/infra/database/prisma.service';
+import { ShowBalanceService } from './services/show-balance.service';
 
 @Module({
     controllers: [UserController],
@@ -18,6 +19,7 @@ import { PrismaService } from 'src/infra/database/prisma.service';
         ReplaceUserService,
         DeleteUserService,
         ShowUserService,
+        ShowBalanceService,
         { provide: UserRepository, useClass: UserPrismaRepository },
     ],
     imports: [],
