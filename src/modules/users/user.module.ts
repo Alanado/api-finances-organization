@@ -9,6 +9,8 @@ import { UserRepository } from './repositories/user.repository';
 import { UserPrismaRepository } from './repositories/prisma/user.prisma.repository';
 import { PrismaService } from 'src/infra/database/prisma.service';
 import { ShowBalanceService } from './services/show-balance.service';
+import { APP_PIPE } from '@nestjs/core';
+import { ZodValidationPipe } from 'nestjs-zod';
 
 @Module({
     controllers: [UserController],
@@ -21,6 +23,7 @@ import { ShowBalanceService } from './services/show-balance.service';
         ShowUserService,
         ShowBalanceService,
         { provide: UserRepository, useClass: UserPrismaRepository },
+        { provide: APP_PIPE, useClass: ZodValidationPipe },
     ],
     imports: [],
 })

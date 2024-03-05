@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { IUpdateUserDTO } from '../dto/update-user.dto';
+import { UpdateUserDTO } from '../dto/update-user.dto';
 import { hash } from 'bcrypt';
 import { UserRepository } from '../repositories/user.repository';
 
@@ -7,7 +7,7 @@ import { UserRepository } from '../repositories/user.repository';
 export class UpdateUserService {
     constructor(private userRepository: UserRepository) {}
 
-    async execute(id: string, { name, email, password }: IUpdateUserDTO) {
+    async execute(id: string, { name, email, password }: UpdateUserDTO) {
         const user = await this.userRepository.findById(id);
 
         if (email && email !== user.email) {

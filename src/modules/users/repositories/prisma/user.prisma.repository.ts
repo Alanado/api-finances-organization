@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../user.repository';
-import { ICreateUSerDTO } from '../../dto/create-user.dto';
+import { CreateUserDTO } from '../../dto/create-user.dto';
 import { IResponseUser } from '../../dto/response-user.dto';
-import { IUpdateUserDTO } from '../../dto/update-user.dto';
+import { UpdateUserDTO } from '../../dto/update-user.dto';
 import { PrismaService } from 'src/infra/database/prisma.service';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class UserPrismaRepository implements UserRepository {
     }
     async update(
         id: string,
-        { name, email, password }: IUpdateUserDTO,
+        { name, email, password }: UpdateUserDTO,
     ): Promise<IResponseUser> {
         return this.prismaService.user.update({
             data: {
@@ -32,7 +32,7 @@ export class UserPrismaRepository implements UserRepository {
         name,
         email,
         password,
-    }: ICreateUSerDTO): Promise<IResponseUser> {
+    }: CreateUserDTO): Promise<IResponseUser> {
         return this.prismaService.user.create({
             data: {
                 name,

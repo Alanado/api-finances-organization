@@ -10,15 +10,16 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { CreateUserService } from './services/create-user.service';
-import { ICreateUSerDTO } from './dto/create-user.dto';
 import { UpdateUserService } from './services/update-user.service';
-import { IUpdateUserDTO } from './dto/update-user.dto';
 import { ReplaceUserService } from './services/replace-user.service';
-import { IReplaceUserDTO } from './dto/replace-user.dto';
 import { DeleteUserService } from './services/delete-user.service';
 import { ShowUserService } from './services/show-user.service';
 import { AuthGuard } from 'src/infra/providers/auth.guard';
 import { ShowBalanceService } from './services/show-balance.service';
+import { CreateUserDTO } from './dto/create-user.dto';
+import { UpdateUserDTO } from './dto/update-user.dto';
+import { ReplaceUserDTO } from './dto/replace-user.dto';
+import { ResponseUserController } from './dto/response-user-controller.dto';
 
 @Controller('/user')
 export class UserController {
@@ -32,14 +33,16 @@ export class UserController {
     ) {}
 
     @Post()
-    async create(@Body() data: ICreateUSerDTO) {
-        return this.createUser.execute({ ...data });
+    async create(@Body() data: CreateUserDTO) {
+        const user = await this.createUser.execute({ ...data });
+        return ResponseUserController.parse(user);
     }
 
     @UseGuards(AuthGuard)
     @Get()
     async show(@Request() req) {
-        return await this.showUser.execute(req.user.sub);
+        const user = await this.showUser.execute(req.user.sub);
+        return ResponseUserController.parse(user);
     }
 
     @UseGuards(AuthGuard)
@@ -50,13 +53,13 @@ export class UserController {
 
     @UseGuards(AuthGuard)
     @Patch()
-    async update(@Body() data: IUpdateUserDTO, @Request() req) {
+    async update(@Body() data: UpdateUserDTO, @Request() req) {
         return await this.updateUser.execute(req.user.sub, { ...data });
     }
 
     @UseGuards(AuthGuard)
     @Put()
-    async replace(@Body() data: IReplaceUserDTO, @Request() req) {
+    async replace(@Body() data: ReplaceUserDTO, @Request() req) {
         return await this.replaceUser.execute(req.user.sub, { ...data });
     }
 

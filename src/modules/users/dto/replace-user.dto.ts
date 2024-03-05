@@ -1,3 +1,3 @@
-import { ICreateUSerDTO } from './create-user.dto';
+import { CreateUserDTO } from './create-user.dto';
 
-export interface IReplaceUserDTO extends ICreateUSerDTO {}
+export class ReplaceUserDTO extends CreateUserDTO {}
