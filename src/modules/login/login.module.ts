@@ -5,6 +5,8 @@ import { UserRepository } from '../users/repositories/user.repository';
 import { UserPrismaRepository } from '../users/repositories/prisma/user.prisma.repository';
 import { LoginController } from './login.controller';
 import { JwtModule } from '@nestjs/jwt';
+import { APP_PIPE } from '@nestjs/core';
+import { ZodValidationPipe } from 'nestjs-zod';
 
 @Module({
     controllers: [LoginController],
@@ -12,6 +14,7 @@ import { JwtModule } from '@nestjs/jwt';
         PrismaService,
         LoginService,
         { provide: UserRepository, useClass: UserPrismaRepository },
+        { provide: APP_PIPE, useClass: ZodValidationPipe },
     ],
     imports: [
         JwtModule.register({
