@@ -22,6 +22,19 @@ export class DeleteMovementService {
             );
         }
 
+        if (movement.type === 'EXPENSE') {
+            const { balance: currentBalance } =
+                await this.userRepository.findById(userId);
+
+            await this.userRepository.updateBalance(
+                userId,
+                currentBalance + movement.value,
+            );
+
+            await this.movementRepository.delete(id, userId);
+            return;
+        }
+
         const { balance: currentBalance } =
             await this.userRepository.findById(userId);
 
@@ -31,5 +44,6 @@ export class DeleteMovementService {
         );
 
         await this.movementRepository.delete(id, userId);
+        return;
     }
 }
