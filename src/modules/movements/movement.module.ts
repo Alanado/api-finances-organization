@@ -9,6 +9,8 @@ import { MovementRepository } from './repository/movement.repository';
 import { MovementPrismaRepository } from './repository/prisma/movement.prisma.repository';
 import { UserRepository } from '../users/repositories/user.repository';
 import { UserPrismaRepository } from '../users/repositories/prisma/user.prisma.repository';
+import { APP_PIPE } from '@nestjs/core';
+import { ZodValidationPipe } from 'nestjs-zod';
 
 @Module({
     controllers: [MovementController],
@@ -20,6 +22,7 @@ import { UserPrismaRepository } from '../users/repositories/prisma/user.prisma.r
         DeleteMovementService,
         { provide: MovementRepository, useClass: MovementPrismaRepository },
         { provide: UserRepository, useClass: UserPrismaRepository },
+        { provide: APP_PIPE, useClass: ZodValidationPipe },
     ],
     imports: [],
 })

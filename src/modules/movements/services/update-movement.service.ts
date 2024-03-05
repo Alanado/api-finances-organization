@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { IUpdateMovementDTO } from '../dto/update-movement.dto';
 import { MovementRepository } from '../repository/movement.repository';
 import { UserRepository } from 'src/modules/users/repositories/user.repository';
+import { UpdateMovementDTO } from '../dto/update-movement.dto';
 
 @Injectable()
 export class UpdateMovementService {
@@ -13,7 +13,7 @@ export class UpdateMovementService {
     async execute(
         id: string,
         userId: string,
-        { category, type, value, description }: IUpdateMovementDTO,
+        { category, type, value, description }: UpdateMovementDTO,
     ) {
         const movement = await this.movementRepository.findByIdAndUser(
             id,
@@ -49,9 +49,9 @@ export class UpdateMovementService {
                         description,
                         value,
                         type,
-                        user_id: userId,
                     },
                     id,
+                    userId,
                 );
 
                 return;
@@ -67,9 +67,9 @@ export class UpdateMovementService {
                         description,
                         value,
                         type,
-                        user_id: userId,
                     },
                     id,
+                    userId,
                 );
 
                 return;
@@ -87,9 +87,9 @@ export class UpdateMovementService {
                         description,
                         value,
                         type,
-                        user_id: userId,
                     },
                     id,
+                    userId,
                 );
                 return;
             }
@@ -103,9 +103,9 @@ export class UpdateMovementService {
                     description,
                     value,
                     type,
-                    user_id: userId,
                 },
                 id,
+                userId,
             );
             return;
         }
@@ -121,9 +121,9 @@ export class UpdateMovementService {
                         description,
                         value,
                         type,
-                        user_id: userId,
                     },
                     id,
+                    userId,
                 );
                 return;
             }
@@ -137,9 +137,9 @@ export class UpdateMovementService {
                     description,
                     value,
                     type,
-                    user_id: userId,
                 },
                 id,
+                userId,
             );
             return;
         }
@@ -150,9 +150,9 @@ export class UpdateMovementService {
                 description,
                 value,
                 type,
-                user_id: userId,
             },
             id,
+            userId,
         );
     }
 }

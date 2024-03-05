@@ -1,12 +1,16 @@
-import { ICreateMovementDTO } from '../dto/create-movement.dto';
+import { CreateMovementDTO } from '../dto/create-movement.dto';
 import { IResponseMovement } from '../dto/response-movement.dto';
-import { IUpdateMovementDTO } from '../dto/update-movement.dto';
+import { UpdateMovementDTO } from '../dto/update-movement.dto';
 
 export abstract class MovementRepository {
-    abstract create(data: ICreateMovementDTO): Promise<IResponseMovement>;
+    abstract create(
+        data: CreateMovementDTO,
+        user_id: string,
+    ): Promise<IResponseMovement>;
     abstract update(
-        data: IUpdateMovementDTO,
+        data: UpdateMovementDTO,
         id: string,
+        user_id: string,
     ): Promise<IResponseMovement>;
     abstract delete(id: string, userId: string): Promise<IResponseMovement>;
     abstract findByIdAndUser(

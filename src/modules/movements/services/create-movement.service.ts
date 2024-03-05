@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { ICreateMovementDTO } from '../dto/create-movement.dto';
 import { MovementRepository } from '../repository/movement.repository';
 import { UserRepository } from 'src/modules/users/repositories/user.repository';
+import { CreateMovementDTO } from '../dto/create-movement.dto';
 
 @Injectable()
 export class CreateMovementService {
@@ -10,13 +10,10 @@ export class CreateMovementService {
         private userRepository: UserRepository,
     ) {}
 
-    async execute({
-        category,
-        type,
-        user_id,
-        value,
-        description,
-    }: ICreateMovementDTO) {
+    async execute(
+        user_id: string,
+        { category, type, value, description }: CreateMovementDTO,
+    ) {
         if (type !== 'REVENUE' && type !== 'EXPENSE') {
             throw new HttpException(
                 'the movement must be of the "REVENUE" or “EXPENSE” type',
@@ -33,13 +30,15 @@ export class CreateMovementService {
                 currentBalance + value,
             );
 
-            return this.movementRepository.create({
-                type,
-                category,
-                value,
-                description,
+            return this.movementRepository.create(
+                {
+                    type,
+                    category,
+                    value,
+                    description,
+                },
                 user_id,
-            });
+            );
         }
 
         const { balance: currentBalance } =
@@ -50,12 +49,14 @@ export class CreateMovementService {
             currentBalance - value,
         );
 
-        return this.movementRepository.create({
-            type,
-            category,
-            value,
-            description,
+        return this.movementRepository.create(
+            {
+                type,
+                category,
+                value,
+                description,
+            },
             user_id,
-        });
+        );
     }
 }

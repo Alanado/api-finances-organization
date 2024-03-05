@@ -11,13 +11,13 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { CreateMovementService } from './services/create-movement.service';
-import { ICreateMovementDTO } from './dto/create-movement.dto';
 import { AuthGuard } from 'src/infra/providers/auth.guard';
-import { IUpdateMovementDTO } from './dto/update-movement.dto';
 import { UpdateMovementService } from './services/update-movement.service';
 import { ShowMovementsService } from './services/show-movements.service';
 import { IQueryParamsDTO } from './dto/query-params.dto';
 import { DeleteMovementService } from './services/delete-movement.service';
+import { CreateMovementDTO } from './dto/create-movement.dto';
+import { UpdateMovementDTO } from './dto/update-movement.dto';
 
 @Controller('/movement')
 export class MovementController {
@@ -30,14 +30,14 @@ export class MovementController {
 
     @UseGuards(AuthGuard)
     @Post()
-    async create(@Body() data: ICreateMovementDTO, @Request() req) {
-        return this.createMovement.execute({ user_id: req.user.sub, ...data });
+    async create(@Body() data: CreateMovementDTO, @Request() req) {
+        return this.createMovement.execute(req.user.sub, { ...data });
     }
 
     @UseGuards(AuthGuard)
     @Patch('/:id')
     async update(
-        @Body() data: IUpdateMovementDTO,
+        @Body() data: UpdateMovementDTO,
         @Request() req,
         @Param('id') id: string,
     ) {

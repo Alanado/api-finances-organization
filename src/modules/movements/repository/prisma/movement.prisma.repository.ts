@@ -1,21 +1,18 @@
 import { PrismaService } from 'src/infra/database/prisma.service';
-import { ICreateMovementDTO } from '../../dto/create-movement.dto';
-import { IUpdateMovementDTO } from '../../dto/update-movement.dto';
 import { MovementRepository } from '../movement.repository';
 import { IResponseMovement } from '../../dto/response-movement.dto';
 import { Injectable } from '@nestjs/common';
+import { CreateMovementDTO } from '../../dto/create-movement.dto';
+import { UpdateMovementDTO } from '../../dto/update-movement.dto';
 
 @Injectable()
 export class MovementPrismaRepository implements MovementRepository {
     constructor(private prismaService: PrismaService) {}
 
-    async create({
-        category,
-        type,
-        user_id,
-        value,
-        description,
-    }: ICreateMovementDTO): Promise<IResponseMovement> {
+    async create(
+        { category, type, value, description }: CreateMovementDTO,
+        user_id: string,
+    ): Promise<IResponseMovement> {
         return this.prismaService.movement.create({
             data: {
                 type,
@@ -28,8 +25,9 @@ export class MovementPrismaRepository implements MovementRepository {
     }
 
     async update(
-        { category, description, value, type, user_id }: IUpdateMovementDTO,
+        { category, description, value, type }: UpdateMovementDTO,
         id: string,
+        user_id: string,
     ): Promise<IResponseMovement> {
         return this.prismaService.movement.update({
             data: {
