@@ -1,23 +1,26 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/infra/database/prisma.service';
 import { IUpdateMovementDTO } from '../dto/update-movement.dto';
+import { MovementRepository } from '../repository/movement.repository';
+import { UserRepository } from 'src/modules/users/repositories/user.repository';
 
 @Injectable()
 export class UpdateMovementService {
-    constructor(private prismaService: PrismaService) {}
+    constructor(
+        private movementRepository: MovementRepository,
+        private userRepository: UserRepository,
+    ) {}
 
     async execute(
         id: string,
         userId: string,
         { category, type, value, description }: IUpdateMovementDTO,
     ) {
-        const movement = await this.prismaService.movement.findUnique({
-            where: { id, userId },
-        });
+        const movement = await this.movementRepository.findByIdAndUser(
+            id,
+            userId,
+        );
 
-        const user = await this.prismaService.user.findUnique({
-            where: { id: userId },
-        });
+        const user = await this.userRepository.findById(userId);
 
         if (!movement) {
             throw new HttpException(
@@ -39,38 +42,36 @@ export class UpdateMovementService {
             if (type !== movement.type && type === 'EXPENSE') {
                 const balance = user.balance - movement.value;
                 const newBalance = balance - value;
-                await this.prismaService.user.update({
-                    data: { balance: newBalance },
-                    where: { id: userId },
-                });
-                await this.prismaService.movement.update({
-                    data: {
+                await this.userRepository.updateBalance(userId, newBalance);
+                await this.movementRepository.update(
+                    {
                         category,
                         description,
                         value,
                         type,
+                        user_id: userId,
                     },
-                    where: { id: movement.id },
-                });
+                    id,
+                );
+
                 return;
             }
 
             if (type !== movement.type && type === 'REVENUE') {
                 const balance = user.balance + movement.value;
                 const newBalance = balance + value;
-                await this.prismaService.user.update({
-                    data: { balance: newBalance },
-                    where: { id: userId },
-                });
-                await this.prismaService.movement.update({
-                    data: {
+                await this.userRepository.updateBalance(userId, newBalance);
+                await this.movementRepository.update(
+                    {
                         category,
                         description,
                         value,
                         type,
+                        user_id: userId,
                     },
-                    where: { id: movement.id },
-                });
+                    id,
+                );
+
                 return;
             }
         }
@@ -79,38 +80,33 @@ export class UpdateMovementService {
             if (movement.type === 'EXPENSE') {
                 const balance = user.balance + movement.value;
                 const newBalance = balance - value;
-                console.log(balance, newBalance);
-                await this.prismaService.user.update({
-                    data: { balance: newBalance },
-                    where: { id: userId },
-                });
-                await this.prismaService.movement.update({
-                    data: {
+                await this.userRepository.updateBalance(userId, newBalance);
+                await this.movementRepository.update(
+                    {
                         category,
                         description,
                         value,
                         type,
+                        user_id: userId,
                     },
-                    where: { id: movement.id },
-                });
+                    id,
+                );
                 return;
             }
 
             const balance = user.balance - movement.value;
             const newBalance = balance + value;
-            await this.prismaService.user.update({
-                data: { balance: newBalance },
-                where: { id: userId },
-            });
-            await this.prismaService.movement.update({
-                data: {
+            await this.userRepository.updateBalance(userId, newBalance);
+            await this.movementRepository.update(
+                {
                     category,
                     description,
                     value,
                     type,
+                    user_id: userId,
                 },
-                where: { id: movement.id },
-            });
+                id,
+            );
             return;
         }
 
@@ -118,48 +114,45 @@ export class UpdateMovementService {
             if (type === 'EXPENSE') {
                 const balance = user.balance - movement.value;
                 const newBalance = balance - movement.value;
-                await this.prismaService.user.update({
-                    data: { balance: newBalance },
-                    where: { id: userId },
-                });
-                await this.prismaService.movement.update({
-                    data: {
+                await this.userRepository.updateBalance(userId, newBalance);
+                await this.movementRepository.update(
+                    {
                         category,
                         description,
                         value,
                         type,
+                        user_id: userId,
                     },
-                    where: { id: movement.id },
-                });
+                    id,
+                );
                 return;
             }
 
             const balance = user.balance + movement.value;
             const newBalance = balance + movement.value;
-            await this.prismaService.user.update({
-                data: { balance: newBalance },
-                where: { id: userId },
-            });
-            await this.prismaService.movement.update({
-                data: {
+            await this.userRepository.updateBalance(userId, newBalance);
+            await this.movementRepository.update(
+                {
                     category,
                     description,
                     value,
                     type,
+                    user_id: userId,
                 },
-                where: { id: movement.id },
-            });
+                id,
+            );
             return;
         }
 
-        return this.prismaService.movement.update({
-            data: {
+        return this.movementRepository.update(
+            {
                 category,
                 description,
                 value,
                 type,
+                user_id: userId,
             },
-            where: { id: movement.id },
-        });
+            id,
+        );
     }
 }

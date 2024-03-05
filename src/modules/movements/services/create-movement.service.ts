@@ -1,10 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/infra/database/prisma.service';
 import { ICreateMovementDTO } from '../dto/create-movement.dto';
+import { MovementRepository } from '../repository/movement.repository';
+import { UserRepository } from 'src/modules/users/repositories/user.repository';
 
 @Injectable()
 export class CreateMovementService {
-    constructor(private prismaService: PrismaService) {}
+    constructor(
+        private movementRepository: MovementRepository,
+        private userRepository: UserRepository,
+    ) {}
 
     async execute({
         category,
@@ -22,46 +26,36 @@ export class CreateMovementService {
 
         if (type === 'REVENUE') {
             const { balance: currentBalance } =
-                await this.prismaService.user.findUnique({
-                    where: { id: user_id },
-                    select: { balance: true },
-                });
+                await this.userRepository.findById(user_id);
 
-            await this.prismaService.user.update({
-                data: { balance: currentBalance + value },
-                where: { id: user_id },
-            });
+            await this.userRepository.updateBalance(
+                user_id,
+                currentBalance + value,
+            );
 
-            return this.prismaService.movement.create({
-                data: {
-                    type,
-                    category,
-                    value,
-                    description,
-                    userId: user_id,
-                },
-            });
-        }
-
-        const { balance: currentBalance } =
-            await this.prismaService.user.findUnique({
-                where: { id: user_id },
-                select: { balance: true },
-            });
-
-        await this.prismaService.user.update({
-            data: { balance: currentBalance - value },
-            where: { id: user_id },
-        });
-
-        return this.prismaService.movement.create({
-            data: {
+            return this.movementRepository.create({
                 type,
                 category,
                 value,
                 description,
-                userId: user_id,
-            },
+                user_id,
+            });
+        }
+
+        const { balance: currentBalance } =
+            await this.userRepository.findById(user_id);
+
+        await this.userRepository.updateBalance(
+            user_id,
+            currentBalance - value,
+        );
+
+        return this.movementRepository.create({
+            type,
+            category,
+            value,
+            description,
+            user_id,
         });
     }
 }

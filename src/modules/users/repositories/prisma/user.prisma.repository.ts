@@ -8,6 +8,25 @@ import { PrismaService } from 'src/infra/database/prisma.service';
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
     constructor(private prismaService: PrismaService) {}
+    async updateBalance(id: string, balance: number): Promise<IResponseUser> {
+        return this.prismaService.user.update({
+            data: { balance },
+            where: { id },
+        });
+    }
+    async update(
+        id: string,
+        { name, email, password }: IUpdateUserDTO,
+    ): Promise<IResponseUser> {
+        return this.prismaService.user.update({
+            data: {
+                name,
+                email,
+                password,
+            },
+            where: { id },
+        });
+    }
 
     async create({
         name,
@@ -30,19 +49,7 @@ export class UserPrismaRepository implements UserRepository {
     async findById(id: string): Promise<IResponseUser> {
         return this.prismaService.user.findUnique({ where: { id } });
     }
-    async update(
-        id: string,
-        { name, email, password }: IUpdateUserDTO,
-    ): Promise<IResponseUser> {
-        return this.prismaService.user.update({
-            data: {
-                name,
-                email,
-                password,
-            },
-            where: { id },
-        });
-    }
+
     async delete(id: string): Promise<IResponseUser> {
         return this.prismaService.user.delete({ where: { id } });
     }

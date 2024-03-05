@@ -1,14 +1,19 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/infra/database/prisma.service';
+import { MovementRepository } from '../repository/movement.repository';
+import { UserRepository } from 'src/modules/users/repositories/user.repository';
 
 @Injectable()
 export class DeleteMovementService {
-    constructor(private prismaService: PrismaService) {}
+    constructor(
+        private movementRepository: MovementRepository,
+        private readonly userRepository: UserRepository,
+    ) {}
 
     async execute(id: string, userId: string) {
-        const movement = await this.prismaService.movement.findUnique({
-            where: { id, userId },
-        });
+        const movement = await this.movementRepository.findByIdAndUser(
+            id,
+            userId,
+        );
 
         if (!movement) {
             throw new HttpException(
@@ -18,16 +23,13 @@ export class DeleteMovementService {
         }
 
         const { balance: currentBalance } =
-            await this.prismaService.user.findUnique({
-                where: { id: userId },
-                select: { balance: true },
-            });
+            await this.userRepository.findById(userId);
 
-        await this.prismaService.user.update({
-            data: { balance: currentBalance - movement.value },
-            where: { id: userId },
-        });
+        await this.userRepository.updateBalance(
+            userId,
+            currentBalance - movement.value,
+        );
 
-        await this.prismaService.movement.delete({ where: { id } });
+        await this.movementRepository.delete(id, userId);
     }
 }
