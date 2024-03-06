@@ -53,7 +53,7 @@ Para usar a API, é necessário autenticar-se. Você deve obter um **token JWT v
 Você precisará clonar este repositório para sua máquina local.
 
 ```
-$ git@github.com:(seu usuário)/api-finances-organization.git
+$ git clone git@github.com:(seu usuário)/api-finances-organization.git
 ```
 
 Depois entre na pasta do projeto.
