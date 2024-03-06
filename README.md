@@ -1,73 +1,45 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 💰 API FINANÇAS
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 🔎 Sobre o projeto
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+A **Api Finanças** é uma aplicação **REST** com o intuito de **gerenciar** suas **finanças** para organizar e poupar seus **gastos**. Suas funcionalidades incluem  **autenticação**, **CRUD** simples de usuários, criação de registros de **movimentações financeiras** dos tipos **Receita** ou **Despesa**, atualização dessas movimentações, geração de saldo referente aos gastos e recebimentos, entre outros.
 
-## Description
+## 🔧 Tecnologias e Ferramentas Utilizadas
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+![Typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) 
+![Nodejs](https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) 
+![Nestjs](https://img.shields.io/badge/nestjs-E0234E?style=for-the-badge&logo=nestjs&logoColor=white) 
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white) 
+![JsonWebToken](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white) 
+![PrismaORM](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white) 
+![Prettier](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E) 
+![Eslint](https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white) 
+![Hoppscotch](https://img.shields.io/badge/Hoppscotch-31C48D?style=for-the-badge&logo=hoppscotch&logoColor=white) 
+![Npm](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)
+![EditorConfig](https://img.shields.io/badge/Editor%20Config-E0EFEF?style=for-the-badge&logo=editorconfig&logoColor=000)
 
-## Installation
+## 🔏 Autenticação
 
-```bash
-$ npm install
-```
+Para usar a API, é necessário autenticar-se. Você deve obter um **token JWT válido** através do **endpoint de login** antes de acessar outros recursos. O token JWT deve ser incluído no **cabeçalho de autorização** de **todas** as solicitações subsequentes.
 
-## Running the app
+## 📜 Rotas
 
-```bash
-# development
-$ npm run start
+### Usuários 
+- POST /user -> Rota responsável pela criação de usuário.
+- GET /user -> Rota responsável para visualizar perfil de usuário (Necessário estar autenticado).
+- GET /user/balance -> Rota responsável para visualizar saldo do usuário (Necessário estar autenticado).
+- PATCH /user -> Rota responsável por atualizar informações do usuário (Necessário estar autenticado).
+- PUT /user -> Rota responsável por atualizar o usuário por inteiro (Necessário estar autenticado).
+- DELETE /user -> Rota responsável por deletar o usuário (Necessário estar autenticado).
 
-# watch mode
-$ npm run start:dev
+### Login
+- POST /login -> Rota para usuários fazerem login na aplicação
 
-# production mode
-$ npm run start:prod
-```
+### Movimentações
+- POST /movement -> Rota responável para criar movimentações financeiras (Necessário estar autenticado).
+- PATCH /movement/:id -> Rota responsável pela atualização das informações da movimentação (Necessário estar autenticado).
+- GET /movement -> Rota responsável por listar todas as movimentações do usuário (Necessário estar autenticado).
+   -  GET /movement?initialDate=2024-03-08&finalDate=2024-05-13 -> É possível utilizar query params para realizar filtro entre datas (Necessário estar autenticado).
+   -  GET /movement?type=expense -> Também é possível filtrar as movimentações pelo tipo: Receitas ou Despesas (Necessário estar autenticado).
+- DELETE /movement/:id -> Rota responsável por deletar uma movimentação (Necessário estar autenticado).
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
