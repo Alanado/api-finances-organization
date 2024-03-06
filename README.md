@@ -82,7 +82,7 @@ mkdir .env
 Inicie e gere o banco de dados e as tabelas necessárias para rodar a aplicação, utilizando as credenciais do banco de dados que você inseriu no arquivo ".env"
 
 ```
-npx prisma generate
+npx prisma db push
 ```
 
 ### 🎯 Iniciando a aplicação
