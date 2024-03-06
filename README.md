@@ -75,9 +75,6 @@ npm install
 Crie um arquivo ".env" na raiz do diretório para suas variáveis de ambiente.
 Nesse arquivo insira suas variáveis de ambiente, utilizando de exemplo o arquivo ".env.example" presente na raiz do diretório.
 
-```
-mkdir .env
-```
 
 Inicie e gere o banco de dados e as tabelas necessárias para rodar a aplicação, utilizando as credenciais do banco de dados que você inseriu no arquivo ".env"
 
