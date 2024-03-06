@@ -53,13 +53,13 @@ Para usar a API, é necessário autenticar-se. Você deve obter um **token JWT v
 Você precisará clonar este repositório para sua máquina local.
 
 ```
-$ git clone git@github.com:(seu usuário)/api-finances-organization.git
+git clone git@github.com:(seu usuário)/api-finances-organization.git
 ```
 
 Depois entre na pasta do projeto.
 
 ```
-$ cd api-finances-organization
+cd api-finances-organization
 ```
 
 ### 📌 Instalando as dependências do projeto
@@ -67,7 +67,7 @@ $ cd api-finances-organization
 Com o Node.js instalado em seu sistema, instale as dependências do projeto.
 
 ```
-$ npm install
+npm install
 ```
 
 ### 🛒 Configurações Necessárias
@@ -76,13 +76,13 @@ Crie um arquivo ".env" na raiz do diretório para suas variáveis de ambiente.
 Nesse arquivo insira suas variáveis de ambiente, utilizando de exemplo o arquivo ".env.example" presente na raiz do diretório.
 
 ```
-$ mkdir .env
+mkdir .env
 ```
 
 Inicie e gere o banco de dados e as tabelas necessárias para rodar a aplicação, utilizando as credenciais do banco de dados que você inseriu no arquivo ".env"
 
 ```
-$ npx prisma generate
+npx prisma generate
 ```
 
 ### 🎯 Iniciando a aplicação
@@ -90,7 +90,7 @@ $ npx prisma generate
 Com a aplicação configurada e tendo todas as dependências instaladas, inicie a aplicação
 
 ```
-$ npm run start
+npm run start
 ```
 
 Pronto! A aplicação está rodando em http://localhost:3000
